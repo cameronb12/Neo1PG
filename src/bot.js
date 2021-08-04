@@ -1,18 +1,13 @@
 // bot token: ODcwODUxODc4Nzk4MzkzMzU0.YQSyAw.ksLSKI-X7Qleg3G6L69MAb1hUnE
+import { config } from 'dotenv';
 import { Client } from 'discord.js';
+import { EventHandler } from './handlers/event-handler.js';
+import Deps from './utils/deps.js';
 
-const bot = new Client();
+config({ path: '.env' });
 
-bot.on('ready', () => {
-    console.log("Starting");
-});
+export const bot = Deps.add(Client, new Client());
 
-bot.on("message", async (message) => {
-    if(message.author.bot) return true;
-    
-    if(message.content === "hello"){
-        message.reply("Hey");
-    }
-});
+Deps.get(EventHandler).init();
 
-bot.login("ODcwODUxODc4Nzk4MzkzMzU0.YQSyAw.ksLSKI-X7Qleg3G6L69MAb1hUnE");
+bot.login(process.env.BOT_TOKEN);
